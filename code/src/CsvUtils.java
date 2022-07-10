@@ -23,7 +23,7 @@ public class CsvUtils {
             String[] dataArray1 = dataRow1.split(",");
             String key = dataArray1[0].replace("\"","");
             ArrayList data = new ArrayList();
-            for (int i = 1; i < dataArray1.length; i++){
+            for (int i = 0; i < dataArray1.length; i++){
                 data.add(dataArray1[i].replace("\"",""));
             }
             hashMap.put(key,data);
@@ -44,12 +44,12 @@ public class CsvUtils {
             String[] dataArray1 = dataRow1.split(",");
             String key = dataArray1[0].replace("\"","");
             ArrayList<String> data = new ArrayList<>();
-            for (int i = 1; i < dataArray1.length; i++) {
+            for (int i = 0; i < dataArray1.length; i++) {
                 data.add(dataArray1[i].replace("\"",""));
             }
-            // compare the data from hashmap with data
+            // compare the datahow to com from hashmap with data
             ArrayList<String> data1 = hashMap.get(key);
-            if (data1 != data) {
+            if (!data1.equals(data)) {
                 difference.add(data);
                 difference.add(data1);
             }
@@ -80,7 +80,6 @@ public class CsvUtils {
     }
 
     public static boolean checkCsvFormat(){
-
         return false;
     }
 }
