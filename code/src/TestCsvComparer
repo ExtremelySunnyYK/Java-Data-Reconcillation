@@ -1,0 +1,21 @@
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+public class TestCsvUtils {
+
+
+    // Systems level test of reading the CSV Files
+    @Test
+    @DisplayName("Read CSV Sample 1 and Sample 3 and return exceptions")
+    void testReadAndProcessCSV() {
+        // Tests the main function in CsV
+    }
+}

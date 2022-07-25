@@ -22,10 +22,11 @@ public class CsvUtils {
 
         while (dataRow1 != null) {
             String[] dataArray1 = dataRow1.split(",");
+            System.out.println(dataArray1);
             String key = dataArray1[0].replace("\"", "");
-            ArrayList data = new ArrayList();
-            for (int i = 0; i < dataArray1.length; i++) {
-                data.add(dataArray1[i].replace("\"", ""));
+            ArrayList<String> data = new ArrayList<>();
+            for (String s : dataArray1) {
+                data.add(s.replace("\"", ""));
             }
             hashMap.put(key, data);
 
@@ -65,9 +66,66 @@ public class CsvUtils {
 
     }
 
+    public static ProcessedRow processCsvLine(String dataRow1) throws Exception{
+        String[] dataArray1 = dataRow1.split(",");
+        String key = dataArray1[0].replace("\"", "");
+        ArrayList<String> data = new ArrayList<>();
+
+        // if dataArray1.length > 4 : throw exception
+        if (dataArray1.length > 4) {
+            throw new Exception("Invalid CSV file");
+        }
+
+        for (int i = 0; i < dataArray1.length; i++) {
+            // data.add(s.replace("\"", ""));
+            String result = dataArray1[i].replaceAll("^\"|\"$", "");
+            
+            // error handling
+            if (result.equals("")) {
+                throw new Exception("Empty value in column " + i);
+            }
+
+            switch(i) {
+                case 0:
+                    if (!result.matches("[a-zA-Z0-9]+")) {
+                        throw new Exception("Invalid value in column " + i);
+                    }
+                    break;
+                case 1:
+                    if (!result.matches("[a-zA-Z]+")) {
+                        throw new Exception("Invalid value in column " + i);
+                    }
+                    break;
+                case 2:
+                // validCurrency = ["INR","USD","AUD"]
+                    if (!result.matches("[a-zA-Z]+")) {
+                        throw new Exception("Invalid value in column " + i);
+                    }
+                    break;
+                case 3:
+                    
+                    if (!result.matches("[a-zA-Z]+")) {
+                        throw new Exception("Invalid value in column " + i);
+                    }
+                    // create validAccountMap = ["CURRENT", "SAVINGS"]
+                    String[] validAccountMap = {"CURRENT", "SAVINGS"};
+
+                    break;
+                case 4:
+                // check if result is a number
+                if (!result.matches("[0-9]+")) {
+                    throw new Exception("Invalid value in column " + i);
+                }
+                    break;
+                
+               
+        }
+        return new ProcessedRow(key,data);
+    }
+
     public static void writeCSV(ArrayList<ArrayList<String>> array, String filename) {
         // create and write the array to a csv file
-        
+
         try {
             BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(filename));
             for (ArrayList<String> array1 : array) {
@@ -94,13 +152,10 @@ public class CsvUtils {
         // Error Handling for input using checkCsvFilePath()
         if (!checkCsvFilePath(filepath)) {
             System.out.println("Error Proceeding, please try again!");
-            inputFilePath(fileNumber);
+            filepath = inputFilePath(fileNumber);
         }
-        // close input
-//        input.close();
 
         return filepath;
-
     }
 
     public static boolean checkCsvFilePath(String filePath) {
@@ -128,7 +183,4 @@ public class CsvUtils {
 
     }
 
-    public static boolean checkCsvFormat() {
-        return false;
-    }
 }
