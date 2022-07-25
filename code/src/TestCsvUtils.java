@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -89,7 +90,8 @@ public class TestCsvUtils {
     @Test
     void testprocessCsvLine_validParams_shouldPass() {
         String line = "ID99,BOS8059799,SGD,CURRENT,208043";
-        ArrayList<String> array = CsvUtils.processCsvLine(line);
+        ProcessedRow pr = CsvUtils.processCsvLine(line);
+        ArrayList array = pr.data;
         assertEquals(5, array.size());
         assertEquals("ID99", array.get(0));
         assertEquals("BOS8059799", array.get(1));
@@ -98,17 +100,6 @@ public class TestCsvUtils {
         assertEquals("208043", array.get(4));
     }
 
-    @Test
-    void testprocessCsvLine_validParams_shouldPass() {
-        String line = "ID99,BOS8059799,SGD,Savings,208043";
-        ArrayList<String> array = CsvUtils.processCsvLine(line);
-        assertEquals(5, array.size());
-        assertEquals("ID99", array.get(0));
-        assertEquals("BOS8059799", array.get(1));
-        assertEquals("SGD", array.get(2));
-        assertEquals("Savings", array.get(3));
-        assertEquals("208043", array.get(4));
-    }
 
     @Test
     void testprocessCsvLine_invalidParams_shouldFail() {
@@ -117,5 +108,24 @@ public class TestCsvUtils {
         assertThrows(Exception.class, () -> {
             CsvUtils.processCsvLine(line);
         });
+        String line1 = "ID99,BOS8059799,SGD,Savings,208043";
+        assertThrows(Exception.class, () -> {
+            CsvUtils.processCsvLine(line1);
+        });
+
+    }
+
+    @Test
+    void testcompareCSV_validParams_shouldPass() {
+        String filePath1 = System.getProperty("user.dir") + "/code/src/csv-files/sample_file_1.csv";
+        String filePath2 = System.getProperty("user.dir") + "/code/src/csv-files/sample_file_3.csv";
+        HashMap<String, ArrayList<String>> file1 = CsvUtils.readFirstCSV(filePath1);
+
+        ArrayList<ArrayList<String>> differences = CsvUtils.compareCSV(filePath2, file1);
+
+        // Check if the differences are correct
+        assertEquals(6, differences.size());
+
+        
     }
 }

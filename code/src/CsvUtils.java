@@ -66,7 +66,7 @@ public class CsvUtils {
 
     }
 
-    public static ProcessedRow processCsvLine(String dataRow1) throws Exception{
+    public static ProcessedRow processCsvLine(String dataRow1) throws Exception {
         String[] dataArray1 = dataRow1.split(",");
         String key = dataArray1[0].replace("\"", "");
         ArrayList<String> data = new ArrayList<>();
@@ -79,31 +79,27 @@ public class CsvUtils {
         for (int i = 0; i < dataArray1.length; i++) {
             // data.add(s.replace("\"", ""));
             String result = dataArray1[i].replaceAll("^\"|\"$", "");
-            
+
             // error handling
             if (result.equals("")) {
                 throw new Exception("Empty value in column " + i);
             }
 
-            switch(i) {
+            switch (i) {
                 case 0:
                     if (!result.matches("[a-zA-Z0-9]+")) {
                         throw new Exception("Invalid value in column " + i);
                     }
                     break;
                 case 1:
-                    if (!result.matches("[a-zA-Z]+")) {
-                        throw new Exception("Invalid value in column " + i);
-                    }
-                    break;
                 case 2:
-                // validCurrency = ["INR","USD","AUD"]
+                    // validCurrency = ["INR","USD","AUD"]
                     if (!result.matches("[a-zA-Z]+")) {
                         throw new Exception("Invalid value in column " + i);
                     }
                     break;
                 case 3:
-                    
+
                     if (!result.matches("[a-zA-Z]+")) {
                         throw new Exception("Invalid value in column " + i);
                     }
@@ -112,16 +108,18 @@ public class CsvUtils {
 
                     break;
                 case 4:
-                // check if result is a number
-                if (!result.matches("[0-9]+")) {
-                    throw new Exception("Invalid value in column " + i);
-                }
+                    // check if result is a number
+                    if (!result.matches("[0-9]+")) {
+                        throw new Exception("Invalid value in column " + i);
+                    }
                     break;
-                
-               
+
+
+            }
         }
-        return new ProcessedRow(key,data);
-    }
+            return new ProcessedRow(key, data);
+        }
+
 
     public static void writeCSV(ArrayList<ArrayList<String>> array, String filename) {
         // create and write the array to a csv file
